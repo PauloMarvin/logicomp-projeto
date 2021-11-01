@@ -41,35 +41,19 @@ for subformula in subformulas(formula7):
 
 print('length of formula8:', length(formula8))
 print('subformulas of formula8:')
+
+
 print("---------------------")
-print(type(formula8))
-print(length(formula8))
-
-
-formula6 = Or(Not(And(Atom('p'), Atom('s'))), Atom('q'))
-
-for subformula in subformulas(formula6):
-     print(length(subformula))
-
-
-subformulas_inner = subformulas(formula6)
-subformulas_inner = list(subformulas_inner)
-
-print(subformulas_inner)
-print(type(subformulas_inner))
-
-print(formula6)
-
-for atom in atoms(formula6):
-    print(atom)
-
 formula7 = Implies(Not(And(Atom('w'), Atom('s'))), And(Atom('w'), Atom('8')))
 
-formula_teste =And(formula7,formula8)
-print(formula_teste)
+print(formula7)
 
-for atom in atoms(formula_teste):
-    print(atom)
+
+
+
+for i in atoms(formula7):
+    print(i)
+
 
 
 #  we have shown in class that for all formula A, len(subformulas(A)) <= length(A):

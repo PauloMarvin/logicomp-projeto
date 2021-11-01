@@ -4,6 +4,7 @@ do some computation on its syntactic structure. """
 
 from formula import *
 
+Binary_Elements = {And, Or , Implies}
 
 def length(formula):
     """Determines the length of a formula in propositional logic."""
@@ -40,7 +41,7 @@ def subformulas(formula):
 #  we have shown in class that, for all formula A, len(subformulas(A)) <= length(A).
 
 
-def atoms(formula):
+def atoms(formula : Formula):
     """Returns the set of all atoms occurring in a formula.
 
     For example, observe the piece of code below.
@@ -52,13 +53,13 @@ def atoms(formula):
     This piece of code above prints: p, s
     (Note that there is no repetition of p)
     """
-    atoms = []
-    subformulas_inner = list(subformulas(formula))
 
-    for subformula in subformulas_inner:
-        if length(subformula) == 1:
-            atoms.append(subformula)
-    return atoms
+    if type(formula) == Atom:
+        return {formula}
+    if type(formula) == Not:
+        return atoms(formula.inner)
+    if type(formula) in Binary_Elements:
+        return atoms(formula.left).union(atoms(formula.right))    
 
 def number_of_atoms(formula):
     """Returns the number of atoms occurring in a formula.
@@ -72,7 +73,7 @@ def number_of_atoms(formula):
 
 def number_of_connectives(formula):
     """Returns the number of connectives occurring in a formula."""
-    pass  # ======== REMOVE THIS LINE AND INSERT YOUR CODE HERE ========
+    pass
 
 
 def is_literal(formula):
