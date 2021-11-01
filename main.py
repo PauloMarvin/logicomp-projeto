@@ -46,12 +46,14 @@ print('subformulas of formula8:')
 print("---------------------")
 formula7 = Implies(Not(And(Atom('w'), Atom('s'))), And(Atom('w'), Atom('8')))
 
-print(formula7)
+
+formula6 = Or(Not(And(Atom('p'), Atom('s'))), Atom('q'))  # ((¬(p /\ s)) v q)
+print(formula6)
 
 
+print(number_of_atoms(formula6))
 
-
-for i in atoms(formula7):
+for i in atoms(formula6):
     print(i)
 
 

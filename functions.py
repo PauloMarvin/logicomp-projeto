@@ -61,7 +61,7 @@ def atoms(formula : Formula):
     if type(formula) in Binary_Elements:
         return atoms(formula.left).union(atoms(formula.right))    
 
-def number_of_atoms(formula):
+def number_of_atoms(formula: Formula):
     """Returns the number of atoms occurring in a formula.
     For instance,
     number_of_atoms(Implies(Atom('q'), And(Atom('p'), Atom('q'))))
@@ -69,7 +69,12 @@ def number_of_atoms(formula):
     must return 3 (Observe that this function counts the repetitions of atoms)
     """
 
-
+    if type(formula) == Atom:
+        return 1
+    if type(formula) == Not:
+        return number_of_atoms(formula.inner)
+    if type(formula) in Binary_Elements:
+        return number_of_atoms(formula.left) + number_of_atoms(formula.right)
 
 def number_of_connectives(formula):
     """Returns the number of connectives occurring in a formula."""
