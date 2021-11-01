@@ -52,8 +52,13 @@ def atoms(formula):
     This piece of code above prints: p, s
     (Note that there is no repetition of p)
     """
-    pass  # ======== REMOVE THIS LINE AND INSERT YOUR CODE HERE ========
+    atoms = []
+    subformulas_inner = list(subformulas(formula))
 
+    for subformula in subformulas_inner:
+        if length(subformula) == 1:
+            atoms.append(subformula)
+    return atoms
 
 def number_of_atoms(formula):
     """Returns the number of atoms occurring in a formula.
@@ -62,7 +67,7 @@ def number_of_atoms(formula):
 
     must return 3 (Observe that this function counts the repetitions of atoms)
     """
-    pass  # ======== REMOVE THIS LINE AND INSERT YOUR CODE HERE ========
+
 
 
 def number_of_connectives(formula):
