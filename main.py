@@ -48,13 +48,37 @@ formula7 = Implies(Not(And(Atom('w'), Atom('s'))), And(Atom('w'), Atom('8')))
 
 
 formula6 = Or(Not(And(Atom('p'), Atom('s'))), Atom('q'))  # ((¬(p /\ s)) v q)
+
 print(formula6)
-
-
-print(number_of_atoms(formula6))
-
-for i in atoms(formula6):
+print(length(formula6))
+print("+-----------------------------+")
+for i in subformulas(formula6):
     print(i)
+
+
+print("++++++++++++++++++")
+
+print(len(subformulas(formula6)) == (2* number_of_connectives(formula6)) + 1)
+
+
+print(formula7)
+print(rank(formula7))
+print(number_of_connectives(formula7))
+
+# print(len(subformulas(formula5)))
+
+# print((2* number_of_connectives(formula5)) + 1)
+
+p = Atom("p")
+
+q = Atom("q")
+
+print("---------------------------------------------")
+formula2 = Implies((And(p,q)),(Or(p,q)))
+print(formula2)
+for i in subformulas(formula2):
+    print(i)
+
 
 
 

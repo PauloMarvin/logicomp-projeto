@@ -6,17 +6,17 @@ from formula import *
 
 Binary_Elements = {And, Or , Implies}
 
-def length(formula):
+def length(formula : Formula):
     """Determines the length of a formula in propositional logic."""
-    if isinstance(formula, Atom):
+    if type(formula) == Atom:
         return 1
-    if isinstance(formula, Not):
+    if type(formula) == Not:
         return length(formula.inner) + 1
-    if isinstance(formula, Implies) or isinstance(formula, And) or isinstance(formula, Or):
+    if type(formula) in Binary_Elements:
         return length(formula.left) + length(formula.right) + 1
 
 
-def subformulas(formula):
+def subformulas(formula : Formula):
     """Returns the set of all subformulas of a formula.
 
     For example, observe the piece of code below.
@@ -29,14 +29,12 @@ def subformulas(formula):
     (Note that there is no repetition of p)
     """
 
-    if isinstance(formula, Atom):
+    if type(formula) == Atom:
         return {formula}
-    if isinstance(formula, Not):
+    if type(formula) == Not:
         return {formula}.union(subformulas(formula.inner))
-    if isinstance(formula, Implies) or isinstance(formula, And) or isinstance(formula, Or):
-        sub1 = subformulas(formula.left)
-        sub2 = subformulas(formula.right)
-        return {formula}.union(sub1).union(sub2)
+    if type(formula) in Binary_Elements:
+        return {formula}.union(subformulas(formula.left)).union(subformulas(formula.right))
 
 #  we have shown in class that, for all formula A, len(subformulas(A)) <= length(A).
 
@@ -53,7 +51,6 @@ def atoms(formula : Formula):
     This piece of code above prints: p, s
     (Note that there is no repetition of p)
     """
-
     if type(formula) == Atom:
         return {formula}
     if type(formula) == Not:
@@ -76,10 +73,25 @@ def number_of_atoms(formula: Formula):
     if type(formula) in Binary_Elements:
         return number_of_atoms(formula.left) + number_of_atoms(formula.right)
 
-def number_of_connectives(formula):
+def number_of_connectives(formula : Formula):
     """Returns the number of connectives occurring in a formula."""
-    pass
+    if type(formula) == Atom:
+        return 0
+    if type(formula) == Not:
+        return number_of_connectives(formula.inner)
+    if type(formula) in Binary_Elements:
+        return (number_of_connectives(formula.left) + number_of_connectives(formula.right)) + 1 
 
+
+def rank(formula : Formula):
+    """Returns the number of connectives occurring in a formula."""
+    if type(formula) == Atom:
+        return 0
+    if type(formula) == Not:
+        return rank(formula.inner) + 1
+    if type(formula) in Binary_Elements:
+        return max([rank(formula.left), rank(formula.right)]) + 1
+         
 
 def is_literal(formula):
     """Returns True if formula is a literal. It returns False, otherwise"""
