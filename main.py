@@ -1,8 +1,10 @@
 """You can test your functions in this module as in the following code: """
 
 
+from re import T
 from formula import *
 from functions import *
+from semantics import truth_value
 
 
 formula1 = Atom('p')  # p
@@ -73,11 +75,14 @@ p = Atom("p")
 
 q = Atom("q")
 
+t = Atom("t")
+
 print("---------------------------------------------")
-formula2 = Implies((And(p,q)),(Or(p,q)))
-print(formula2)
-for i in subformulas(formula2):
-    print(i)
+formula3 = Implies(p,q)
+print(formula3)
+
+print(truth_value(formula3, {'p': True, 'q' : False}))
+
 
 
 
