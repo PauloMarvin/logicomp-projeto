@@ -4,7 +4,7 @@
 from re import T
 from formula import *
 from functions import *
-from semantics import sat, satisfiability_brute_force, truth_value
+from semantics import partial_interpretation, sat, satisfiability_brute_force, truth_value
 
 
 formula1 = Atom('p')  # p
@@ -77,13 +77,19 @@ q = Atom("q")
 
 t = Atom("t")
 
+r = Atom("r")
+
+v = Atom("v")
+
 print("---------------------------------------------")
-formula3 = And(Not(p),q)
+formula3 = And(And(p,Not(q)),Or(r,v))
 print(formula3)
 
-print(truth_value(formula3, {'p': False, 'q' : True}))
+#print(truth_value(formula3, {'p': False, 'q' : True, 't': True}))
 
-print(satisfiability_brute_force(formula3))
+#print(satisfiability_brute_force(formula3))
+
+print(partial_interpretation(formula3))
 
 
 

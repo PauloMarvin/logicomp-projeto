@@ -4,9 +4,10 @@
 from typing import Dict
 from formula import *
 from functions import atoms
+from copy import copy, deepcopy
 
 
-def truth_value(formula: Formula, interpretation : Dict):
+def truth_value(formula: Formula, interpretation: Dict):
     """Determines the truth value of a formula in an interpretation (valuation).
     An interpretation may be defined as dictionary. For example, {'p': True, 'q': False}.
     """
@@ -19,7 +20,6 @@ def truth_value(formula: Formula, interpretation : Dict):
                 return False
             else:
                 return "interpretation of atom must be True or False"
-        
 
     if type(formula) == Not:
         valoration = truth_value(formula.inner, interpretation)
@@ -44,7 +44,7 @@ def truth_value(formula: Formula, interpretation : Dict):
     if type(formula) == Or:
         left_formula = truth_value(formula.left, interpretation)
         right_formula = truth_value(formula.right, interpretation)
-        
+
         if type(left_formula) != bool or type(right_formula) != bool:
             return "interpretation of atoms must be True or False"
         if left_formula or right_formula:
@@ -55,19 +55,17 @@ def truth_value(formula: Formula, interpretation : Dict):
     if type(formula) == Implies:
         left_formula = truth_value(formula.left, interpretation)
         right_formula = truth_value(formula.right, interpretation)
-        
+
         if type(left_formula) != bool or type(right_formula) != bool:
             return "interpretation of atoms must be True or False"
         if left_formula == True and right_formula == False:
             return False
         else:
             return True
-        
-        
 
 
-
-def is_logical_consequence(premises, conclusion):  # function TT-Entails? in the book AIMA.
+# function TT-Entails? in the book AIMA.
+def is_logical_consequence(premises, conclusion):
     """Returns True if the conclusion is a logical consequence of the set of premises. Otherwise, it returns False."""
     pass
     # ======== YOUR CODE HERE ========
@@ -86,34 +84,36 @@ def is_valid(formula):
 
 
 def sat(formula: Formula, atoms: set, intepretation: dict):
-    
+
+    # se atomos estão vazios......
     if not atoms:
-        #verifica uma hipótese de valoração.....
+        # verifica uma hipótese de valoração.....
         valuation_hypothesis = truth_value(formula, intepretation)
         if valuation_hypothesis:
-            #se verdade essa valoração == True ela atende, então a retorne
+            # se verdade essa valoração ela atende, então a retorne
             return intepretation
         else:
+            # caso não essa hipótese é falsa, então retorne False
             return False
-    #remove um atomo da formula e seta Duas hipoteses True or False
-    atom = atoms.pop() 
-    new_dict = intepretation
-    true_hypothesis_atom = dict(new_dict,**{str(atom.name): True })
-    false_hypothesis_atom = dict(new_dict,**{str(atom.name): False })
+    #  remove um átomo da formula e seta duas hipóteses True or False.
+    new_atoms = atoms.copy() #copia por valor e não por referência.
+    new_dict = intepretation.copy() #copia por valor e não por referência.
+    atom = new_atoms.pop()
+    true_hypothesis_atom = dict(new_dict, **{str(atom.name): True})
+    false_hypothesis_atom = dict(new_dict, **{str(atom.name): False})
 
-    formula_valuetion_true = sat(formula,atoms,true_hypothesis_atom)
+    formula_valuetion_true = sat(formula, new_atoms, true_hypothesis_atom)
     if formula_valuetion_true:
         return formula_valuetion_true
 
-    formula_valuation_false = sat(formula,atoms,false_hypothesis_atom)
+    formula_valuation_false = sat(formula, new_atoms, false_hypothesis_atom)
     if formula_valuation_false:
         return formula_valuation_false
 
     return "Impossível satisfazer essa formula"
-    
-    
 
-def satisfiability_brute_force(formula):
+
+def satisfiability_brute_force(formula: Formula):
     """Checks whether formula is satisfiable.
     In other words, if the input formula is satisfiable, it returns an interpretation that assigns true to the formula.
     Otherwise, it returns False."""
@@ -122,6 +122,26 @@ def satisfiability_brute_force(formula):
     return sat(formula, list_atoms, initial_interpretation)
 
 
+def partial_interpretation(formula : Formula):
+
+    if type(formula) == Atom:
+        intepretation =  dict(intepretation, **{str(formula.name): True})
+        return intepretation
+    if type(formula) == Not:
+        intepretation =  dict(intepretation, **{(str(formula.inner.name)): False})
+        return intepretation
+    if type(formula) == And:
+        left_formula = partial_interpretation(formula.left)
+        right_formula = partial_interpretation(formula.right)
+        teste =  dict(left_formula, **right_formula)
+        intepretation = dict(intepretation, **teste)
+        
+        pass
+
+        
+
+
+    
 
 
 
