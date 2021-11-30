@@ -6,6 +6,8 @@ from formula import *
 from functions import atoms
 from copy import copy, deepcopy
 
+from interpretation_fol import Interpretation
+
 
 def truth_value(formula: Formula, interpretation: Dict):
     """Determines the truth value of a formula in an interpretation (valuation).
@@ -113,30 +115,56 @@ def sat(formula: Formula, atoms: set, intepretation: dict):
     return "Impossível satisfazer essa formula"
 
 
-def satisfiability_brute_force(formula: Formula):
+def getList(dict):
+    return dict.keys()
+
+
+def satisfiability_brute_force(formula: Formula, pre_interpretation : dict = {}):
     """Checks whether formula is satisfiable.
     In other words, if the input formula is satisfiable, it returns an interpretation that assigns true to the formula.
     Otherwise, it returns False."""
-    list_atoms = atoms(formula)
-    initial_interpretation = {}
+    list_atoms = list(atoms(formula))
+    initial_interpretation = pre_interpretation.copy()
+    initial_interpretation_atoms = list(initial_interpretation.keys())
+    for atom in list_atoms:
+        # print(type(atom.name))
+        if atom.name in initial_interpretation_atoms:
+            list_atoms.remove(atom)
+        
+    print(initial_interpretation)
+    
+    list_atoms = (list_atoms)
+    print(list_atoms)
+    
+    # for atom_name in pre_interpretation.keys():
+    #     if atom_name in
+        
     return sat(formula, list_atoms, initial_interpretation)
 
 
 def partial_interpretation(formula : Formula):
+    interpretation = {}
+    new_interpretation = interpretation.copy()
 
     if type(formula) == Atom:
-        intepretation =  dict(intepretation, **{str(formula.name): True})
-        return intepretation
+        return dict(new_interpretation, **{str(formula.name): True})
     if type(formula) == Not:
-        intepretation =  dict(intepretation, **{(str(formula.inner.name)): False})
-        return intepretation
+        return dict(new_interpretation, **{(str(formula.inner.name)): False})
     if type(formula) == And:
         left_formula = partial_interpretation(formula.left)
         right_formula = partial_interpretation(formula.right)
-        teste =  dict(left_formula, **right_formula)
-        intepretation = dict(intepretation, **teste)
         
-        pass
+        if left_formula and right_formula:
+            return dict(left_formula,**right_formula)
+        
+        if left_formula:
+            return left_formula
+        
+        if right_formula:
+            return right_formula
+        
+        return {}
+
 
         
 

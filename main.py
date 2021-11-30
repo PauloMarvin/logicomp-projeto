@@ -82,14 +82,14 @@ r = Atom("r")
 v = Atom("v")
 
 print("---------------------------------------------")
-formula3 = And(And(p,Not(q)),Or(r,v))
+formula3 = And(And(p,Not(q)),And(r,v))
 print(formula3)
 
 #print(truth_value(formula3, {'p': False, 'q' : True, 't': True}))
 
-#print(satisfiability_brute_force(formula3))
+print(satisfiability_brute_force(formula3,{'p': True, 'q': False}))
 
-print(partial_interpretation(formula3))
+# print(partial_interpretation(formula3))
 
 
 
