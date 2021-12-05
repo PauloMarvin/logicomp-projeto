@@ -4,7 +4,7 @@ do some computation on its syntactic structure. """
 
 from formula import *
 
-Binary_Elements = {And, Or , Implies}
+binary_connectives = {And, Or , Implies}
 
 def length(formula : Formula):
     """Determines the length of a formula in propositional logic."""
@@ -12,7 +12,7 @@ def length(formula : Formula):
         return 1
     if type(formula) == Not:
         return length(formula.inner) + 1
-    if type(formula) in Binary_Elements:
+    if type(formula) in binary_connectives:
         return length(formula.left) + length(formula.right) + 1
 
 
@@ -33,7 +33,7 @@ def subformulas(formula : Formula):
         return {formula}
     if type(formula) == Not:
         return {formula}.union(subformulas(formula.inner))
-    if type(formula) in Binary_Elements:
+    if type(formula) in binary_connectives:
         return {formula}.union(subformulas(formula.left)).union(subformulas(formula.right))
 
 #  we have shown in class that, for all formula A, len(subformulas(A)) <= length(A).
@@ -55,7 +55,7 @@ def atoms(formula : Formula):
         return {formula}
     if type(formula) == Not:
         return atoms(formula.inner)
-    if type(formula) in Binary_Elements:
+    if type(formula) in binary_connectives:
         return atoms(formula.left).union(atoms(formula.right))    
 
 def number_of_atoms(formula: Formula):
@@ -70,7 +70,7 @@ def number_of_atoms(formula: Formula):
         return 1
     if type(formula) == Not:
         return number_of_atoms(formula.inner)
-    if type(formula) in Binary_Elements:
+    if type(formula) in binary_connectives:
         return number_of_atoms(formula.left) + number_of_atoms(formula.right)
 
 def number_of_connectives(formula : Formula):
@@ -79,17 +79,17 @@ def number_of_connectives(formula : Formula):
         return 0
     if type(formula) == Not:
         return number_of_connectives(formula.inner)
-    if type(formula) in Binary_Elements:
+    if type(formula) in binary_connectives:
         return (number_of_connectives(formula.left) + number_of_connectives(formula.right)) + 1 
 
 
 def rank(formula : Formula):
-    """Returns the number of connectives occurring in a formula."""
+    """Returns the value the depth of nesting of its quantifiers in formula"""
     if type(formula) == Atom:
         return 0
     if type(formula) == Not:
         return rank(formula.inner) + 1
-    if type(formula) in Binary_Elements:
+    if type(formula) in binary_connectives:
         return max([rank(formula.left), rank(formula.right)]) + 1
          
 

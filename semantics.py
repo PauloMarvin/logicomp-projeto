@@ -1,15 +1,25 @@
 """The goal in this module is to define functions associated with the semantics of formulas in propositional logic. """
 
 
-from typing import Dict
 from formula import *
 from functions import atoms
-from copy import copy, deepcopy
 
 from interpretation_fol import Interpretation
 
 
-def truth_value(formula: Formula, interpretation: Dict):
+import time
+def timing(f):
+    def wrap(*args, **kwargs):
+        time1 = time.time()
+        ret = f(*args, **kwargs)
+        time2 = time.time()
+        print('{:s} function took {:.3f} ms'.format(f.__name__, (time2-time1)*1000.0))
+
+        return ret
+    return wrap
+
+
+def truth_value(formula: Formula, interpretation: dict):
     """Determines the truth value of a formula in an interpretation (valuation).
     An interpretation may be defined as dictionary. For example, {'p': True, 'q': False}.
     """
@@ -112,33 +122,24 @@ def sat(formula: Formula, atoms: set, intepretation: dict):
     if formula_valuation_false:
         return formula_valuation_false
 
-    return "Impossível satisfazer essa formula"
+    #caso a hipótese da árvore atual de truth ou false não exista retorne None
+    return None
 
 
-def getList(dict):
-    return dict.keys()
-
-
+@timing
 def satisfiability_brute_force(formula: Formula, pre_interpretation : dict = {}):
     """Checks whether formula is satisfiable.
     In other words, if the input formula is satisfiable, it returns an interpretation that assigns true to the formula.
     Otherwise, it returns False."""
+    
     list_atoms = list(atoms(formula))
     initial_interpretation = pre_interpretation.copy()
     initial_interpretation_atoms = list(initial_interpretation.keys())
     for atom in list_atoms:
-        # print(type(atom.name))
         if atom.name in initial_interpretation_atoms:
             list_atoms.remove(atom)
         
-    print(initial_interpretation)
-    
-    list_atoms = (list_atoms)
-    print(list_atoms)
-    
-    # for atom_name in pre_interpretation.keys():
-    #     if atom_name in
-        
+
     return sat(formula, list_atoms, initial_interpretation)
 
 
@@ -164,6 +165,7 @@ def partial_interpretation(formula : Formula):
             return right_formula
         
         return {}
+  
 
 
         

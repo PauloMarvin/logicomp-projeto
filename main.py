@@ -82,20 +82,25 @@ r = Atom("r")
 v = Atom("v")
 
 print("---------------------------------------------")
-formula3 = And(And(p,Not(q)),And(r,v))
+formula3 = And(And(p,(q)),And(r,v))
+
+formula4 = And(p,Not(p))
+
 print(formula3)
-
+print(formula4)
 #print(truth_value(formula3, {'p': False, 'q' : True, 't': True}))
+print("+++++++++++++++++++++++++++++++++++++++++++++++++++++")
+print("Sem nenhuma valoração")
+print(satisfiability_brute_force(formula4),end="\n")
 
-print(satisfiability_brute_force(formula3,{'p': True, 'q': False}))
+# print("+++++++++++++++++++++++++++++++++++++++++++++++++++++")
+# print("Com a valoração de dois átomos")
+# print(satisfiability_brute_force(formula3,{'p': True, 'q': False}),end = "\n")
 
-# print(partial_interpretation(formula3))
+# print("+++++++++++++++++++++++++++++++++++++++++++++++++++++")
+# print("Com a valoração vinda de partial_intepretation")
+# print(satisfiability_brute_force(formula3,partial_interpretation(formula3)), end = "\n")
 
-
-
-
-
-#  we have shown in class that for all formula A, len(subformulas(A)) <= length(A):
-# for example, for formula8:
-# print('number of subformulas of formula8:', len(subformulas(formula8)))
-# print('len(subformulas(formula8)) <= length(formula8):', len(subformulas(formula8)) <= length(formula8))
+# print("+++++++++++++++++++++++++++++++++++++++++++++++++++++")
+# print("Com a valoração de todos os Átomo")
+# print(satisfiability_brute_force(formula3,{'p': True, 'q': False, 'r' : True, 'v' : True}), end = "\n")
